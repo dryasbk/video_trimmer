@@ -7,7 +7,7 @@ import 'package:video_trimmer/video_trimmer.dart';
 class TrimmerView extends StatefulWidget {
   final File file;
 
-  const TrimmerView(this.file, {Key? key}) : super(key: key);
+  const TrimmerView(this.file, {super.key});
   @override
   State<TrimmerView> createState() => _TrimmerViewState();
 }
@@ -56,12 +56,11 @@ class _TrimmerViewState extends State<TrimmerView> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
         if (Navigator.of(context).userGestureInProgress) {
-          return false;
-        } else {
-          return true;
+          return;
         }
       },
       child: Scaffold(

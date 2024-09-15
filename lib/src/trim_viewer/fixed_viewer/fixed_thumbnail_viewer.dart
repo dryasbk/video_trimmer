@@ -17,7 +17,7 @@ class FixedThumbnailViewer extends StatelessWidget {
   /// For showing the thumbnails generated from the video,
   /// like a frame by frame preview
   const FixedThumbnailViewer({
-    Key? key,
+    super.key,
     required this.videoFile,
     required this.videoDuration,
     required this.thumbnailHeight,
@@ -25,7 +25,7 @@ class FixedThumbnailViewer extends StatelessWidget {
     required this.fit,
     required this.onThumbnailLoadingComplete,
     this.quality = 75,
-  }) : super(key: key);
+  });
 
   Stream<List<Uint8List?>> generateThumbnail() async* {
     final String videoPath = videoFile.path;
