@@ -6,7 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
               type: FileType.video,
               allowCompression: false,
             );
-            if (result != null) {
+            if (result != null && context.mounted) {
               File file = File(result.files.single.path!);
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) {
