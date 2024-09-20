@@ -1,9 +1,12 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:fc_native_video_thumbnail/fc_native_video_thumbnail.dart';
 import 'package:flutter/material.dart';
+import 'package:tmp_path/tmp_path.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
+import 'package:path/path.dart' as p;
+// import 'package:video_thumbnail/video_thumbnail.dart';
 
 class ScrollableThumbnailViewer extends StatelessWidget {
   final File videoFile;
@@ -38,12 +41,20 @@ class ScrollableThumbnailViewer extends StatelessWidget {
     for (int i = 1; i <= numberOfThumbnails; i++) {
       Uint8List? bytes;
       try {
-        bytes = await VideoThumbnail.thumbnailData(
-          video: videoPath,
-          imageFormat: ImageFormat.JPEG,
-          timeMs: (eachPart * i).toInt(),
-          quality: quality,
-        );
+        var plugin = FcNativeVideoThumbnail();
+        final destFile = tmpPath() + p.extension(videoPath);
+        await plugin.getVideoThumbnail(
+            srcFile: videoPath,
+            destFile: destFile,
+            width: 50 * 8,
+            height: 50,
+            quality: quality,
+            // srcFileUri: isSrcUri,
+            format: 'jpeg');
+        if (await File(destFile).exists()) {
+          var imageFile = File(destFile);
+          bytes = imageFile.readAsBytesSync();
+        }
       } catch (e) {
         debugPrint('ERROR: Couldn\'t generate thumbnails: $e');
       }
